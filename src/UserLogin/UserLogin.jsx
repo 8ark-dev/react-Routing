@@ -1,15 +1,29 @@
 import React from "react";
 
 import {
-    Switch,
-    BrowserRouter,
-    Route,
+  Switch,
+  BrowserRouter,
+  Route,
 } from "react-router-dom";
 import LoginForm from './LoginForm';
 
-function UserLogin() {
+export default function UserLogin() {
   return (
-    <div>라우터를 추가하세요.</div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/">
+          <HomePage/>
+        </Route>
+
+        <Route path="/detail">
+          <UserDetailPage/>
+        </Route>
+
+        <Route path="/login">
+          <LoginPage/>
+        </Route>
+      </Switch>
+    </BrowserRouter>
   )
 }
 
@@ -53,4 +67,3 @@ function UserDetailPage() {
     </div>
   );
 }
-export default UserLogin

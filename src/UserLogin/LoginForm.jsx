@@ -1,5 +1,5 @@
 import React, {useRef} from 'react'
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function LoginForm() {
   const history = useHistory();
@@ -46,4 +46,4 @@ function LoginForm() {
   )
 }
 
-export default LoginForm
+export default LoginForm;
