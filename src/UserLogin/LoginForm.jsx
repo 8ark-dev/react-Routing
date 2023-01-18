@@ -11,6 +11,12 @@ function LoginForm() {
 
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
+
+    history.push(`/detail?email=${email}&password=${password}`)
+    //history.push({
+     // pathname : '/detail',
+     // search : `?email=${email}&password=${password}`
+    //})
   };
 
   return (
@@ -32,6 +38,7 @@ function LoginForm() {
           <label>Password</label>
           <input
             placeholder='enter password.'
+            ref={passwordRef}
             required
             id='password'
             name='password'

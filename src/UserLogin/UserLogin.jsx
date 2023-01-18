@@ -4,6 +4,9 @@ import {
   Switch,
   BrowserRouter,
   Route,
+  Link,
+  useLocation,
+  Redirect,
 } from "react-router-dom";
 import LoginForm from './LoginForm';
 
@@ -11,7 +14,7 @@ export default function UserLogin() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/">
+        <Route exact path="/">
           <HomePage/>
         </Route>
 
@@ -30,9 +33,9 @@ export default function UserLogin() {
 function HomePage() {
   return (
     <div>
-      <h2>Home Page</h2>
+      <h2>Welcome to my homepage</h2>
       <div>
-        {}
+        <Link to="/login">Login</Link>
       </div>
     </div>
   );
@@ -44,15 +47,23 @@ function LoginPage() {
       <h2>Login Page</h2>
       <LoginForm/>
       <div>
-        {}
+        <Link to="/">Back to Home</Link>
       </div>
     </div>
   );
 }
 
 function UserDetailPage() {
-  const email = 'abc@def.com'
-  const password = '1234'
+
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+
+  const email = searchParams.get('email')
+  const password = searchParams.get('password')
+
+  if (!email || !password) {
+    return <Redirect to="/login"/>
+  }
 
   return (
     <div>
@@ -63,7 +74,7 @@ function UserDetailPage() {
         <br/>
         <strong>{password}</strong>
       </p>
-      {}
+      <Link to="/login">Logout</Link>
     </div>
   );
 }
