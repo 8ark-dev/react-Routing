@@ -1,8 +1,6 @@
 import React, {useRef} from 'react'
 
-import React from 'react'
-
-function RegisterForm() {
+function RegisterForm({onSubmit}) {
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -17,7 +15,7 @@ function RegisterForm() {
         password
     }
 
-    onsubmit(formData);
+    onSubmit(formData);
   };
 
   return (

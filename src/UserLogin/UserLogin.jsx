@@ -7,8 +7,10 @@ import {
   Link,
   useLocation,
   Redirect,
+  useHistory,
 } from "react-router-dom";
 import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
 
 export default function UserLogin() {
   return (
@@ -24,6 +26,10 @@ export default function UserLogin() {
 
         <Route path="/login">
           <LoginPage/>
+        </Route>
+
+        <Route path="/register">
+          <RegisterPage/>
         </Route>
       </Switch>
     </BrowserRouter>
@@ -47,7 +53,14 @@ function LoginPage() {
       <h2>Login Page</h2>
       <LoginForm/>
       <div>
-        <Link to="/">Back to Home</Link>
+        <ul>
+          <li>
+            <Link to="/">Back to Home</Link>
+          </li>
+          <li>
+            <Link to="/register">Register</Link>
+          </li>
+        </ul>
       </div>
     </div>
   );
@@ -77,4 +90,29 @@ function UserDetailPage() {
       <Link to="/login">Logout</Link>
     </div>
   );
+}
+
+function RegisterPage() {
+  const history = useHistory();
+
+  const handleSubmit = (e) => {
+    console.log("유저를 등록하세요")
+  };
+
+  return (
+    <div>
+      <h2>Register Page</h2>
+      <RegisterForm onSubmit ={handleSubmit}/>
+      <div>
+        <ul>
+          <li>
+            <Link to="/">Back to home</Link>
+          </li>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+        </ul>
+      </div>
+    </div>
+  )
 }
