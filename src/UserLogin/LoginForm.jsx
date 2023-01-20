@@ -1,7 +1,7 @@
 import React, {useRef} from 'react'
 import { useHistory } from "react-router-dom";
 
-function LoginForm() {
+function LoginForm({onSubmit}) {
   const history = useHistory();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -11,12 +11,16 @@ function LoginForm() {
 
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-
-    history.push(`/detail?email=${email}&password=${password}`)
+    const formData = {
+      email,
+      password
+    };
+    //history.push(`/detail?email=${email}&password=${password}`)
     //history.push({
      // pathname : '/detail',
      // search : `?email=${email}&password=${password}`
     //})
+    onSubmit(formData);
   };
 
   return (

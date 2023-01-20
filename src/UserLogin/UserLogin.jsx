@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Switch,
@@ -11,6 +11,8 @@ import {
 } from "react-router-dom";
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
+
+const users=[]
 
 export default function UserLogin() {
   return (
@@ -48,10 +50,19 @@ function HomePage() {
 }
 
 function LoginPage() {
+  const history = useHistory()
+  const handleSubmit = (formData) => {
+    const {email, password} = formData
+    const foundUser = users.find(user => user.email === email && user.password === password)
+    
+    if (!foundUser) return 
+    history.push(`/detail?email=${email}&password=${password}`)
+  
+  }
   return (
     <div>
       <h2>Login Page</h2>
-      <LoginForm/>
+      <LoginForm onSubmit = {handleSubmit}/>
       <div>
         <ul>
           <li>
@@ -93,10 +104,19 @@ function UserDetailPage() {
 }
 
 function RegisterPage() {
+  const [error, setError] = useState()
   const history = useHistory();
 
-  const handleSubmit = (e) => {
-    console.log("유저를 등록하세요")
+  const handleSubmit = (formData) => {
+    const { email } = formData
+    const formUser = users.find(user => user.email === email)
+
+    if (formUser) {
+      return setError("이미 등록된 이메일입니다.")
+    }
+
+    users.push(formData)
+    history.push('/login')
   };
 
   return (
@@ -112,6 +132,9 @@ function RegisterPage() {
             <Link to="/login">Login</Link>
           </li>
         </ul>
+      </div>
+      <div>
+        {error}
       </div>
     </div>
   )
