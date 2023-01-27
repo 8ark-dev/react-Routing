@@ -1,8 +1,6 @@
-import React, {useRef} from 'react'
-import { useHistory } from "react-router-dom";
+import React, { useRef } from "react";
 
-function LoginForm({onSubmit}) {
-  const history = useHistory();
+export default function LoginForm({ onSubmit }) {
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -13,13 +11,9 @@ function LoginForm({onSubmit}) {
     const password = passwordRef.current.value;
     const formData = {
       email,
-      password
+      password,
     };
-    //history.push(`/detail?email=${email}&password=${password}`)
-    //history.push({
-     // pathname : '/detail',
-     // search : `?email=${email}&password=${password}`
-    //})
+
     onSubmit(formData);
   };
 
@@ -27,34 +21,32 @@ function LoginForm({onSubmit}) {
     <div>
       <form>
         <fieldset>
-          <label htmlFor='email'>Email</label>
+          <label htmlgor="email">Email</label>
           <input
-            placeholder='enter email.'
+            placeholder="Enter email."
             required
             ref={emailRef}
             id="email"
             type="email"
-            name='email'
-            autoComplete='off'
+            name="email"
+            autoComplete="off"
           />
         </fieldset>
         <fieldset>
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
           <input
-            placeholder='enter password.'
-            ref={passwordRef}
             required
-            id='password'
-            name='password'
-            type='password'
+            ref={passwordRef}
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Enter password."
           />
         </fieldset>
-        <button type='submit' onClick={submitForm}>
+        <button type="submit" onClick={submitForm}>
           Login
         </button>
       </form>
     </div>
-  )
+  );
 }
-
-export default LoginForm;

@@ -1,22 +1,23 @@
-import React from 'react'
-import { Redirect, Route, useLocation } from 'react-router-dom'
+import React from "react";
+import { Route, Redirect, useLocation } from "react-router-dom";
 
-function PrivateRoute({ children : Component, ...props}) {
-    const location = useLocation();
+function PrivateRoute({ children: Component, ...props }) {
+  const location = useLocation();
   return (
-    <Route>
-        {...props}
-        render = {(componentProps) => {
-            const isLoggedIn = !!location.state.user;
+    <Route
+      {...props}
+      render={(componentProps) => {
+        // location.state가 없으면, /login 페이지로 이동합니다.
+        const isLoggedIn = !!location.state.user;
 
-            if (!isLoggedIn) {
-                return <Redirect to="/login"/>
-            }
+        if (!isLoggedIn) {
+          return <Redirect to="/login" />;
+        }
 
-            return Component;
-        }}
-    </Route>
-  )
+        return Component;
+      }}
+    />
+  );
 }
 
-export default PrivateRoute
+export default PrivateRoute;

@@ -1,6 +1,6 @@
-import React, {useRef} from 'react'
+import React, { useRef } from "react";
 
-function RegisterForm({onSubmit}) {
+export default function RegisterForm({ onSubmit }) {
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -10,45 +10,43 @@ function RegisterForm({onSubmit}) {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
-    const formData  = {
-        email,
-        password
-    }
+    const formData = {
+      email,
+      password,
+    };
 
     onSubmit(formData);
   };
 
   return (
     <div>
-        <form>
+      <form>
         <fieldset>
-                <label htmlFor='email'>Email</label>
-                <input 
-                    placeholder='Enter email.'
-                    required
-                    ref={emailRef}
-                    id="email"
-                    type="email"
-                    name="email"
-                    autoComplete='off'
-                />
-            </fieldset>
-            
-            <fieldset>
-                <label htmlFor='password'>Password</label>
-                <input 
-                    placeholder='Enter password.'
-                    required
-                    ref={passwordRef}
-                    id="password"
-                    type="password"
-                    name="password"
-                />
-            </fieldset>
-            <button onClick={submitForm}>Register</button>
-        </form>
-    </div>
-  )
-}
+          <label htmlFor="email">Email</label>
+          <input
+            placeholder="Enter email."
+            required
+            ref={emailRef}
+            id="email"
+            type="email"
+            name="email"
+            autoComplete="off"
+          />
+        </fieldset>
 
-export default RegisterForm
+        <fieldset>
+          <label htmlFor="password">Password</label>
+          <input
+            required
+            ref={passwordRef}
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Enter password."
+          />
+        </fieldset>
+        <button onClick={submitForm}>Register</button>
+      </form>
+    </div>
+  );
+}

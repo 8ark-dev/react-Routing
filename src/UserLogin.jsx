@@ -1,73 +1,68 @@
-import React, { useState } from "react";
-
+import React, { useEffect } from "react";
 import {
+  Redirect,
+  BrowserRouter as Router,
   Switch,
-  BrowserRouter,
   Route,
   Link,
   useLocation,
-  Redirect,
   useHistory,
 } from "react-router-dom";
-import LoginForm from './components/LoginForm';
-import RegisterForm from './components/RegisterForm';
+import LoginForm from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
+import PrivateRoute from "./components/PrivateRoute";
 
-const users=[]
+import { registerUser, loginUser } from "./service/auth";
 
 export default function UserLogin() {
   return (
-    <BrowserRouter>
+    <Router>
       <Switch>
         <Route exact path="/">
-          <HomePage/>
-        </Route>
-
-        <Route path="/detail">
-          <UserDetailPage/>
+          <Redirect to="/login" />
         </Route>
 
         <Route path="/login">
-          <LoginPage/>
+          <LoginPage />
         </Route>
 
         <Route path="/register">
-          <RegisterPage/>
+          <RegisterPage />
         </Route>
-      </Switch>
-    </BrowserRouter>
-  )
-}
 
-function HomePage() {
-  return (
-    <div>
-      <h2>Welcome to my homepage</h2>
-      <div>
-        <Link to="/login">Login</Link>
-      </div>
-    </div>
+        <PrivateRoute path="/detail">
+          <UserDetailPage />
+        </PrivateRoute>
+      </Switch>
+    </Router>
   );
 }
 
 function LoginPage() {
-  const history = useHistory()
+  const history = useHistory();
+
   const handleSubmit = (formData) => {
-    const {email, password} = formData
-    const foundUser = users.find(user => user.email === email && user.password === password)
-    
-    if (!foundUser) return 
-    history.push(`/detail?email=${email}&password=${password}`)
-  
-  }
+    const foundUser = loginUser(formData);
+
+    if (!foundUser) return;
+
+    const location = {
+      pathname: "/detail",
+      state: {
+        user: foundUser,
+      },
+    };
+
+    history.push(location);
+  };
+
+  // 페이지 별로 반복되어 등장하는 코드를 공통화하세요.
   return (
     <div>
-      <h2>Login Page</h2>
-      <LoginForm onSubmit = {handleSubmit}/>
+      <h2>Login</h2>
+      <LoginForm onSubmit={handleSubmit} />
       <div>
         <ul>
-          <li>
-            <Link to="/">Back to Home</Link>
-          </li>
           <li>
             <Link to="/register">Register</Link>
           </li>
@@ -77,65 +72,51 @@ function LoginPage() {
   );
 }
 
-function UserDetailPage() {
-
-  const location = useLocation()
-  const searchParams = new URLSearchParams(location.search)
-
-  const email = searchParams.get('email')
-  const password = searchParams.get('password')
-
-  if (!email || !password) {
-    return <Redirect to="/login"/>
-  }
-
-  return (
-    <div>
-      <h2>User Detail Page</h2>
-      <p>
-        <h3>User Details</h3>
-        <em>{email}</em>
-        <br/>
-        <strong>{password}</strong>
-      </p>
-      <Link to="/login">Logout</Link>
-    </div>
-  );
-}
-
 function RegisterPage() {
-  const [error, setError] = useState()
   const history = useHistory();
 
   const handleSubmit = (formData) => {
-    const { email } = formData
-    const formUser = users.find(user => user.email === email)
-
-    if (formUser) {
-      return setError("이미 등록된 이메일입니다.")
-    }
-
-    users.push(formData)
-    history.push('/login')
+    registerUser(formData);
+    history.push("/login");
   };
 
+  // 페이지 별로 반복되어 등장하는 코드를 공통화하세요.
   return (
     <div>
-      <h2>Register Page</h2>
-      <RegisterForm onSubmit ={handleSubmit}/>
+      <h2>Register</h2>
+      <RegisterForm onSubmit={handleSubmit} />
       <div>
         <ul>
-          <li>
-            <Link to="/">Back to home</Link>
-          </li>
           <li>
             <Link to="/login">Login</Link>
           </li>
         </ul>
       </div>
+    </div>
+  );
+}
+
+function UserDetailPage() {
+  const history = useHistory();
+  const location = useLocation();
+  const user = location.state.user;
+
+  useEffect(() => {
+    return () => history.replace();
+  }, [history]);
+
+  // 페이지 별로 반복되어 등장하는 코드를 공통화하세요.
+  return (
+    <div>
+      <h2>User Details</h2>
+
       <div>
-        {error}
+        <em>email : {user.email}</em>
+      </div>
+
+      <div>
+        <Link to="/login">Logout</Link>
       </div>
     </div>
-  )
+  );
 }
